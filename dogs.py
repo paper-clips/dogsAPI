@@ -1,14 +1,27 @@
 import requests
-#import json
+import json
+
+# Get dog breed from user
+breed = input("Name a dog breed: ")
 
 # API GET request
-response = requests.get("https://dog.ceo/api/breed/hound/images/random")
-#print(json.dumps(response.json(), indent=4))       # Print request info
+response = requests.get("https://dog.ceo/api/breed/" + breed + "/images/random")
+print(json.dumps(response.json(), indent=4))       # Print request info to debug
 
-# Verify input
+# Verify input and API request, exit app if errors
 if response.json()["status"] != "success":
     # API request not successful
     print("Unsuccessful API request.")
+    exit()
+isMessageFound = False
+for key,value in response.content.items():
+    if value == "message":
+        isMessageFound = True
+        break
+    print(value)
+if isMessageFound == False:
+    # Invalid god breed
+    print("Breed not correct.")
     exit()
 if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
     # Invalid URL
