@@ -1,5 +1,8 @@
 import requests
-import json
+from rich.console import Console
+#import json
+
+console = Console()
 
 # Get dog breed from user
 breed = input("Name a dog breed (or type random): ")
@@ -13,7 +16,7 @@ if breed == "random":
     # Verify API request, exit app if error
     if response.status_code != 200:
         # API request not successful
-        print("Unsuccessful API request.")
+        console.print("Unsuccessful API request.", style="bold red")
         exit()
 
     # Retrieve and save image
@@ -21,7 +24,7 @@ if breed == "random":
     with open('dogImage.jpg', 'wb') as img:
         img.write(web_image)
 
-    print("Image found!")
+    console.print("Image found!", style="bold green")
 # Specific dog breed picture
 else:
     # API GET request
@@ -31,15 +34,15 @@ else:
     # Verify input and API request, exit app if errors
     if response.status_code != 200:
         # API request not successful
-        print("Unsuccessful API request.")
+        console.print("Unsuccessful API request.", style="bold red")
         exit()
     if 'message' not in response.json():
         # Invalid breed
-        print("Invalid breed type.")
+        console.print("Invalid breed type.", style="bold red")
         exit()
     if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
         # Invalid URL
-        print("Invalid return address. (On the API's end)")
+        console.print("Invalid return address. (On the API's end)", style="bold red")
         exit()
 
     # Retrieve and save image
@@ -47,6 +50,4 @@ else:
     with open('dogImage.jpg', 'wb') as img:
         img.write(web_image)
 
-    print(breed.capitalize() + " image found!")
-
-print("---------------------------------")
+    console.print(breed.capitalize() + " image found!", style="bold green")
