@@ -14,15 +14,15 @@ if response.json()["status"] != "success":
     print("Unsuccessful API request.")
     exit()
 isMessageFound = False
-for key,value in response.content.items():
-    if value == "message":
-        isMessageFound = True
-        break
-    print(value)
-if isMessageFound == False:
-    # Invalid god breed
-    print("Breed not correct.")
-    exit()
+# for key,value in response.content.items():
+#     if value == "message":
+#         isMessageFound = True
+#         break
+#     print(value)
+# if isMessageFound == False:
+#     # Invalid dog breed
+#     print("Breed not correct.")
+#     exit()
 if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
     # Invalid URL
     print("Not correct website.")
