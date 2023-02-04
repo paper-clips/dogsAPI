@@ -13,20 +13,10 @@ if response.status_code != 200:
     # API request not successful
     print("Unsuccessful API request.")
     exit()
-isMessageFound = False
-# for key,value in response.content.items():
-#     if value == "message":
-#         isMessageFound = True
-#         break
-#     print(value)
-# for m in response.json():
-#     if m["message"]:
-#         isMessageFound = True
-#         break
-# if isMessageFound == False:
-#     # Invalid dog breed
-#     print("Breed not correct.")
-#     exit()
+if 'message' not in response.json():
+    # Invalid breed
+    print("Breed not correct.")
+    exit()
 if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
     # Invalid URL
     print("Not correct website.")
