@@ -5,7 +5,7 @@ from rich.console import Console
 console = Console()
 
 # Get dog breed from user
-breed = input("Name a dog breed (or type random): ")
+breed = input("Name a dog breed (or type \"random\" or \"list\"): ")
 
 # Random dog picture
 if breed == "random":
@@ -25,6 +25,9 @@ if breed == "random":
         img.write(web_image)
 
     console.print("Image found!", style="bold green")
+# List breed types
+elif breed == "list":
+    print("Breeds list:")
 # Specific dog breed picture
 else:
     # API GET request
