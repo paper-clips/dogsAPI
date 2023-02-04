@@ -9,7 +9,7 @@ response = requests.get("https://dog.ceo/api/breed/" + breed + "/images/random")
 print(json.dumps(response.json(), indent=4))       # Print request info to debug
 
 # Verify input and API request, exit app if errors
-if response.json()["status"] != "success":
+if response.status_code != 200:
     # API request not successful
     print("Unsuccessful API request.")
     exit()
@@ -19,6 +19,10 @@ isMessageFound = False
 #         isMessageFound = True
 #         break
 #     print(value)
+# for m in response.json():
+#     if m["message"]:
+#         isMessageFound = True
+#         break
 # if isMessageFound == False:
 #     # Invalid dog breed
 #     print("Breed not correct.")
