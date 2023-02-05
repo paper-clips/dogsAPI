@@ -9,7 +9,7 @@ console = Console()
 
 # Get dog breed from user
 breed = input("Name a dog breed (or type \"random\" or \"list\" or \"end\"): ")
-
+breed = breed.replace("-", "/")
 while breed != "end":
     # Random dog picture
     if breed == "random":
@@ -22,20 +22,24 @@ while breed != "end":
             # API request not successful
             console.print("Unsuccessful API request.", style="bold red")
             exit()
+        # Other verification?
 
         # Retrieve and save image
         web_image = requests.get(response.json()["message"]).content
         with open('dogImage.jpg', 'wb') as img:
             img.write(web_image)
 
+        breed = breed.replace("/", "-")
         console.print("Image found!", style="bold green")
     # List breed types
     elif breed == "list":
         print("Breeds list:")
-        with open('dogBreedsCSV.csv', mode='r') as dogBreedsCSV:
+        # Open CSV file
+        with open('dogBreedsCSV.csv', 'r') as dogBreedsCSV:
             dogBreeds = csv.reader(dogBreedsCSV)
             for dogBreed in dogBreeds:
-                pprint(dogBreed)
+                for d in range(len(dogBreed)):
+                    console.print(dogBreed[d], style="blue")
     # Specific dog breed picture
     else:
         # API GET request
@@ -48,9 +52,11 @@ while breed != "end":
             console.print("Unsuccessful API request.", style="bold red")
             exit()
         if 'message' not in response.json():
-            # Invalid breed
-            console.print("Invalid breed type.", style="bold red")
-            exit()
+            # Invalid breed, ask for input again
+            console.print("Invalid input type.", style="bold red")
+            breed = input("Name a dog breed (or type \"random\" or \"list\" or \"end\"): ")
+            breed = breed.replace("-", "/")
+            continue
         if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
             # Invalid URL
             console.print("Invalid return address. (On the API's end)", style="bold red")
@@ -61,6 +67,8 @@ while breed != "end":
         with open('dogImage.jpg', 'wb') as img:
             img.write(web_image)
 
+        breed = breed.replace("/", "-")
         console.print(breed.capitalize() + " image found!", style="bold green")
 
     breed = input("Name a dog breed (or type \"random\" or \"list\" or \"end\"): ")
+    breed = breed.replace("-", "/")
