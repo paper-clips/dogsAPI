@@ -1,5 +1,6 @@
 import requests
 from rich.console import Console
+import csv
 #import json
 
 console = Console()
@@ -28,6 +29,10 @@ if breed == "random":
 # List breed types
 elif breed == "list":
     print("Breeds list:")
+    with open('dogBreedsCSV.csv', mode='r') as dogBreedsCSV:
+        dogBreeds = csv.reader(dogBreedsCSV)
+        for dogBreed in dogBreeds:
+            print(''.join(str(dogBreed)), sep=' ')
 # Specific dog breed picture
 else:
     # API GET request
