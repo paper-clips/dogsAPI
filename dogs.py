@@ -1,6 +1,8 @@
 import requests
 from rich.console import Console
 import csv
+from pprint import pprint
+import re
 #import json
 
 console = Console()
@@ -32,7 +34,7 @@ elif breed == "list":
     with open('dogBreedsCSV.csv', mode='r') as dogBreedsCSV:
         dogBreeds = csv.reader(dogBreedsCSV)
         for dogBreed in dogBreeds:
-            print(''.join(str(dogBreed)), sep=' ')
+            pprint(dogBreed)
 # Specific dog breed picture
 else:
     # API GET request
