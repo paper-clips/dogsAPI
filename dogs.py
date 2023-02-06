@@ -22,7 +22,11 @@ while breed != "end":
             # API request not successful
             console.print("Unsuccessful API request.", style="bold red")
             exit()
-        # Other verification?
+        if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
+            # Invalid URL
+            # May remove, verifies that the return isn't from another source
+            console.print("Invalid return address. (On the API's end)", style="bold red")
+            exit()
 
         # Retrieve and save image
         web_image = requests.get(response.json()["message"]).content
@@ -59,6 +63,7 @@ while breed != "end":
             continue
         if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
             # Invalid URL
+            # May remove, verifies that the return isn't from another source
             console.print("Invalid return address. (On the API's end)", style="bold red")
             exit()
 
@@ -67,8 +72,10 @@ while breed != "end":
         with open('dogImage.jpg', 'wb') as img:
             img.write(web_image)
 
+        # Prints that the image was found
         breed = breed.replace("/", "-")
         console.print(breed.capitalize() + " image found!", style="bold green")
 
+    # Get input again
     breed = input("Name a dog breed (or type \"random\" or \"list\" or \"end\"): ")
     breed = breed.replace("-", "/")
