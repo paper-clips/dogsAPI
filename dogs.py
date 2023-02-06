@@ -1,8 +1,6 @@
 import requests
 from rich.console import Console
 import csv
-from pprint import pprint
-import re
 #import json
 
 console = Console()
