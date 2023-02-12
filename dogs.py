@@ -16,23 +16,22 @@ class DogFunctions:
             return requests.get("https://dog.ceo/api/breed/" + breed + "/images/random")    # Specific dog breed
 
     # Verify API request, exit app if error
-    def verifyAPIRequest(self, response):
+    def verifyAPIRequest(self, response, breed):
         if response.status_code != 200:
             # API request not successful
             self.console.print("Unsuccessful API request.", style="bold red")
             exit()
+        # Check whether the user specified a valid dog breed (also whether the GET request returned a dog picture)
+        if breed != "random" and breed != "list":
+            if 'message' not in response.json():
+                # Invalid breed (or other issues), ask for input again
+                self.console.print("Invalid input type.", style="bold red")
+                return False
         if not response.json()["message"].startswith("https://images.dog.ceo/breeds/"):
             # Invalid URL
             # May remove, verifies that the return isn't from another source
             self.console.print("Invalid return address. (On the API's end)", style="bold red")
             exit()
-
-    # Check whether the user specified a valid dog breed (also whether the GET request returned a dog picture)
-    def isBreedValid(self, response):
-        if 'message' not in response.json():
-            # Invalid breed (or other issues), ask for input again
-            self.console.print("Invalid input type.", style="bold red")
-            return False
         return True
 
     # Print JSON Objects that are returned from GET request to debug
@@ -85,7 +84,7 @@ def main():
             response = dogs.getRequest(breed)
             #printJSONObjects(response)     # To debug
 
-            dogs.verifyAPIRequest(response)
+            dogs.verifyAPIRequest(response, breed)
 
             dogs.saveImage(response)
 
@@ -99,8 +98,7 @@ def main():
             #printJSONObjects(response)     # To debug
 
             # Verify input and API request, exit app if errors
-            dogs.verifyAPIRequest(response)
-            isValid = dogs.isBreedValid(response)
+            isValid = dogs.verifyAPIRequest(response, breed)
             if isValid == False:
                 breed = dogs.getInput()
                 continue
