@@ -78,6 +78,7 @@ def main():
     # Get dog breed from user
     breed = dogs.getInput()
 
+    # Loops until user types "end"
     while breed != "end":
         # Random dog picture
         if breed == "random":
